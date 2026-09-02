@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DocuMind.API/DocuMind.API.csproj" />
+    <Project Path="src/DocuMind.Application/DocuMind.Application.csproj" />
+    <Project Path="src/DocuMind.Domain/DocuMind.Domain.csproj" />
+    <Project Path="src/DocuMind.Infrastructure/DocuMind.Infrastructure.csproj" />
+  </Folder>
+</Solution>
