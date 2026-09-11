@@ -1,4 +1,6 @@
-﻿using DocuMind.Infrastructure.Persistence;
+﻿using DocuMind.Application.Abstractions.Persistence;
+using DocuMind.Infrastructure.Persistence;
+using DocuMind.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +14,19 @@ namespace DocuMind.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DocuMindDbContext>(options =>
+            services.AddDbContext<
+                DocuMindDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<
+                IKnowledgeDocumentRepository,
+                KnowledgeDocumentRepository>();
+
+            services.AddScoped<
+                IUnitOfWork,
+                UnitOfWork>();
+
             return services;
         }
     }
