@@ -1,4 +1,5 @@
 ﻿using DocuMind.Application.Abstractions.Persistence;
+using DocuMind.Application.Documents.CreateDocument;
 using DocuMind.Infrastructure.Persistence;
 using DocuMind.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;

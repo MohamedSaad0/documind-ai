@@ -1,4 +1,5 @@
 using DocuMind.Infrastructure;
+using DocuMind.Application;
 using Scalar.AspNetCore;
 
 
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();

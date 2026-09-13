@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Abstractions\AI\" />
-    <Folder Include="Abstractions\Persistence\" />
-    <Folder Include="Documents\" />
   </ItemGroup>
 
   <ItemGroup>

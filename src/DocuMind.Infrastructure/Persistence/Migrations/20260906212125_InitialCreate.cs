@@ -35,3 +35,4 @@ namespace DocuMind.Infrastructure.Persistence.Migrations
         }
     }
 }
+    

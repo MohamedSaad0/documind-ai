@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Folder Include="AI\Ollama\" />
-    <Folder Include="Persistence\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
