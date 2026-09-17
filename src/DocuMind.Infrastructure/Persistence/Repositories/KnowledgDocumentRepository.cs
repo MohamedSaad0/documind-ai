@@ -18,7 +18,7 @@ namespace DocuMind.Infrastructure.Persistence.Repositories
 
         public async Task<KnowledgeDocument?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.KnowledgeDocuments.FirstOrDefaultAsync(document => document.Id == id, cancellationToken);
+            return await _dbContext.KnowledgeDocuments.AsNoTracking().FirstOrDefaultAsync(document => document.Id == id, cancellationToken);
         }
 
         public async Task<IReadOnlyList<KnowledgeDocument>> GetAllAysnc(CancellationToken cancellationToken = default)

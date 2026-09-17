@@ -1,8 +1,7 @@
 ﻿using DocuMind.Application.Documents.CreateDocument;
+using DocuMind.Application.Documents.GetDocument;
+using DocuMind.Application.Documents.GetDocuments;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DocuMind.Application
 {
@@ -11,6 +10,8 @@ namespace DocuMind.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddScoped<CreateDocumentService>();
+            services.AddScoped<GetDocumentService>();
+            services.AddScoped<GetDocumentsService>();
 
             return services;
         }

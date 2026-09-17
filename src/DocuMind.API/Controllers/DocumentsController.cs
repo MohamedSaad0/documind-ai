@@ -1,6 +1,7 @@
 using DocuMind.Application.Documents.CreateDocument;
+using DocuMind.Application.Documents.GetDocument;
+using DocuMind.Application.Documents.GetDocuments;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 namespace DocuMind.API.Controllers;
@@ -12,10 +13,15 @@ namespace DocuMind.API.Controllers;
 public class Documentcontroller : ControllerBase
 {
     private readonly CreateDocumentService _createDocumentService;
+    private readonly GetDocumentService _getDocumentService;
 
-    public Documentcontroller(CreateDocumentService createDocumentService)
+    private readonly GetDocumentsService _getDocumentsService;
+
+    public Documentcontroller(CreateDocumentService createDocumentService, GetDocumentService getDocumentService, GetDocumentsService getDocumentsService)
     {
         _createDocumentService = createDocumentService;
+        _getDocumentService = getDocumentService;
+        _getDocumentsService = getDocumentsService;
     }
 
     [HttpPost]
@@ -33,8 +39,21 @@ public class Documentcontroller : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult GetById(Guid id)
+    public async Task<ActionResult<GetDocumentResponse>> GetById(Guid id,  CancellationToken cancellationToken) 
     {
-        return Ok();
+        var response = await _getDocumentService.ExecuteAsync(id, cancellationToken);
+
+        if(response is null)
+        { return  NotFound(); }
+
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyList<GetDocumentsResponse>>> GetAll(CancellationToken cancellationToken)
+    {
+        var response = await _getDocumentsService.ExcuteAysnc(cancellationToken);
+
+        return Ok(response);
     }
 }
