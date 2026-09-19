@@ -14,5 +14,7 @@ namespace DocuMind.Application.Abstractions.Persistence
         void Add(KnowledgeDocument document);
 
         void Remove(KnowledgeDocument document);
+
+        Task<KnowledgeDocument?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

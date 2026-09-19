@@ -36,5 +36,21 @@ namespace DocuMind.Domain.Entities
             DocumentType = documentType;
             CreatedAt = DateTime.UtcNow;
         }
+
+        public void update(string title, string content, string documentType)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Document title is required.", nameof(title));
+
+            if (string.IsNullOrWhiteSpace(content))
+                throw new ArgumentException("content", nameof(content));
+
+            if (string.IsNullOrWhiteSpace(documentType))
+                throw new ArgumentException("Document type is required.", nameof(documentType));
+
+            Title = title;
+            Content = content;
+            DocumentType = documentType;
+        }
     }
 }

@@ -36,6 +36,9 @@ namespace DocuMind.Infrastructure.Persistence.Repositories
             _dbContext.Remove(document);
         }
 
-        
+        public async Task<KnowledgeDocument?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.KnowledgeDocuments.FirstOrDefaultAsync(document => document.Id == id, cancellationToken);
+        }
     }
 }

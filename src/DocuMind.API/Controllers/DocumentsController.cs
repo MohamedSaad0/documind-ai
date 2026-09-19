@@ -2,6 +2,7 @@ using DocuMind.Application.Documents.CreateDocument;
 using DocuMind.Application.Documents.DeleteDocument;
 using DocuMind.Application.Documents.GetDocument;
 using DocuMind.Application.Documents.GetDocuments;
+using DocuMind.Application.Documents.Updatedocument;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -17,17 +18,20 @@ public class Documentcontroller : ControllerBase
     private readonly GetDocumentService _getDocumentService;
     private readonly GetDocumentsService _getDocumentsService;
     private readonly DeleteDocumentService _deleteDocumentService;
+    private readonly UpdateDocumentService _updateDocumentService;
 
     public Documentcontroller(CreateDocumentService createDocumentService,
         GetDocumentService getDocumentService,
         GetDocumentsService getDocumentsService,
-        DeleteDocumentService deleteDocumentService
+        DeleteDocumentService deleteDocumentService,
+        UpdateDocumentService updateDocumentService
         )
     {
         _createDocumentService = createDocumentService;
         _getDocumentService = getDocumentService;
         _getDocumentsService = getDocumentsService;
         _deleteDocumentService = deleteDocumentService;
+        _updateDocumentService = updateDocumentService;
     }
 
     [HttpPost]
@@ -45,12 +49,12 @@ public class Documentcontroller : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<GetDocumentResponse>> GetById(Guid id,  CancellationToken cancellationToken) 
+    public async Task<ActionResult<GetDocumentResponse>> GetById(Guid id, CancellationToken cancellationToken)
     {
         var response = await _getDocumentService.ExecuteAsync(id, cancellationToken);
 
-        if(response is null)
-        { return  NotFound(); }
+        if (response is null)
+        { return NotFound(); }
 
         return Ok(response);
     }
@@ -76,4 +80,20 @@ public class Documentcontroller : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPut("{id:guid}")]
+
+    public async Task<ActionResult<UpdateDocumentResponse>> Update(Guid id, UpdateDocumentRequest request, CancellationToken cancellationToken)
+    {
+        var response = await _updateDocumentService.ExecuteAsync(id, request, cancellationToken);
+
+        if(response is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+
+    }
+
 }
