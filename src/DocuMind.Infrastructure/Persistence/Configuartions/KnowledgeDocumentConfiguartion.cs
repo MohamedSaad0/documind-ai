@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DocuMind.Domain.Entities;
+﻿using DocuMind.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DocuMind.Infrastructure.Persistence.Configuartions
+namespace DocuMind.Infrastructure.Persistence.Configurations
 {
     public class KnowledgeDocumentConfiguartion : IEntityTypeConfiguration<KnowledgeDocument>
     {
         public void Configure(EntityTypeBuilder<KnowledgeDocument> builder)
         {
+
+            builder.ToTable("KnowledgeDocuments");
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Title)

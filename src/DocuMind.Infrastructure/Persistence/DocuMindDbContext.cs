@@ -12,6 +12,8 @@ namespace DocuMind.Infrastructure.Persistence
 
         public DbSet<KnowledgeDocument> KnowledgeDocuments => Set<KnowledgeDocument>();
 
+        public DbSet<Inquiry> Inquiries => Set<Inquiry>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) { 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DocuMindDbContext).Assembly);
 
