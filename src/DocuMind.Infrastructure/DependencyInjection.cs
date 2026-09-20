@@ -1,13 +1,13 @@
-﻿using DocuMind.Application.Abstractions.Persistence;
-using DocuMind.Application.Documents.CreateDocument;
+﻿using DocuMind.Application.Abstractions.AI;
+using DocuMind.Application.Abstractions.Persistence;
+using DocuMind.Infrastructure.AI.Ollama;
 using DocuMind.Infrastructure.Persistence;
 using DocuMind.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.Options;
+
 
 namespace DocuMind.Infrastructure
 {
@@ -27,6 +27,16 @@ namespace DocuMind.Infrastructure
             services.AddScoped<
                 IUnitOfWork,
                 UnitOfWork>();
+
+            services.AddHttpClient<OllamaAiAnalysisService>((serviceProvider, client) =>
+            {
+                var options = serviceProvider.GetRequiredService<IOptions<OllamaOptions>>().Value;
+                client.BaseAddress = new Uri(options.BaseUrl);
+            });
+
+            services.AddScoped<IAiAnalysisService, OllamaAiAnalysisService>();
+
+            services.Configure<OllamaOptions>(configuration.GetSection("ollama"));
 
             return services;
         }
