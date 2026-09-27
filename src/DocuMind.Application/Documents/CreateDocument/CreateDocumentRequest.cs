@@ -6,7 +6,7 @@ namespace DocuMind.Application.Documents.CreateDocument
 {
     public sealed record CreateDocumentRequest(
         string Title,
-        string ContentType,
+        string Content,
         string DocumentType
         );
 }

@@ -21,7 +21,7 @@ namespace DocuMind.Application.Documents.CreateDocument
         {
             var document = new KnowledgeDocument(
                 request.Title,
-                request.ContentType,
+                request.Content,
                 request.DocumentType
                 );
 

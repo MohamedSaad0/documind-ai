@@ -14,9 +14,9 @@ namespace DocuMind.Infrastructure.AI.Ollama
         private readonly HttpClient _httpClient;
         private readonly OllamaOptions _options;
 
-        public OllamaAiAnalysisService(HttpClient HttpClient, IOptions<OllamaOptions> options)
+        public OllamaAiAnalysisService(HttpClient httpClient, IOptions<OllamaOptions> options)
         {
-            _httpClient = HttpClient;
+            _httpClient = httpClient;
             _options = options.Value;
         }
 
@@ -26,22 +26,28 @@ namespace DocuMind.Infrastructure.AI.Ollama
         CancellationToken cancellationToken = default)
         {
             var request = new OllamaChatRequest(
-                _options.Model,
-                [new OllamaMessage(
-        "user",
-        $$$"""
-        Analyze the following document against the question.
-        Document:
-        {documentContent}
-        Question:
-        {question}
-        Return JSON with exactly these properties:
-        {{
-            "isRelevant": true,
-            "explanation": "your explanation"
-        }}
-        """)
-                ]);
+                            _options.Model,
+                            [
+                                new OllamaMessage(
+                        "user",
+                        $$"""
+                        Analyze the following document against the question.
+
+                        Document:
+                        {{documentContent}}
+
+                        Question:
+                        {{question}}
+
+                        Return JSON with exactly these properties:
+                        {
+                            "isRelevant": true,
+                            "explanation": "your explanation"
+                        }
+                        """
+                    )
+                            ]
+                        );
 
 
             using var response = await _httpClient.PostAsJsonAsync("/api/chat", request, cancellationToken);
@@ -55,7 +61,9 @@ namespace DocuMind.Infrastructure.AI.Ollama
                 throw new InvalidOperationException("Ollama returned an empty response.");
             }
 
-            var analysis = JsonSerializer.Deserialize<OllamaAnalysisResponse>(ollamaResponse.message.Content);
+            var analysis = JsonSerializer.Deserialize<OllamaAnalysisResponse>(ollamaResponse.Message.Content,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+);
 
             if (analysis is null)
             {
@@ -70,5 +78,6 @@ namespace DocuMind.Infrastructure.AI.Ollama
 
 
         }
+
     }
 }

@@ -15,28 +15,20 @@ namespace DocuMind.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<
-                DocuMindDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DocuMindDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<
-                IKnowledgeDocumentRepository,
-                KnowledgeDocumentRepository>();
+            services.AddScoped<IKnowledgeDocumentRepository, KnowledgeDocumentRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<
-                IUnitOfWork,
-                UnitOfWork>();
+            services.Configure<OllamaOptions>(configuration.GetSection("Ollama"));
 
-            services.AddHttpClient<OllamaAiAnalysisService>((serviceProvider, client) =>
+            services.AddHttpClient<IAiAnalysisService, OllamaAiAnalysisService>((serviceProvider, client) =>
             {
                 var options = serviceProvider.GetRequiredService<IOptions<OllamaOptions>>().Value;
+
                 client.BaseAddress = new Uri(options.BaseUrl);
             });
-
-            services.AddScoped<IAiAnalysisService, OllamaAiAnalysisService>();
-
-            services.Configure<OllamaOptions>(configuration.GetSection("ollama"));
 
             return services;
         }

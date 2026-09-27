@@ -1,7 +1,10 @@
+using DocuMind.API.Controllers.Requests;
+using DocuMind.Application.Abstractions.AI;
 using DocuMind.Application.Documents.CreateDocument;
 using DocuMind.Application.Documents.DeleteDocument;
 using DocuMind.Application.Documents.GetDocument;
 using DocuMind.Application.Documents.GetDocuments;
+using DocuMind.Application.Documents.TriageDocument;
 using DocuMind.Application.Documents.Updatedocument;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,11 +23,14 @@ public class Documentcontroller : ControllerBase
     private readonly DeleteDocumentService _deleteDocumentService;
     private readonly UpdateDocumentService _updateDocumentService;
 
+    private readonly TriageDocumentService _triageDocumentService;
+
     public Documentcontroller(CreateDocumentService createDocumentService,
         GetDocumentService getDocumentService,
         GetDocumentsService getDocumentsService,
         DeleteDocumentService deleteDocumentService,
-        UpdateDocumentService updateDocumentService
+        UpdateDocumentService updateDocumentService,
+        TriageDocumentService triageDocumentService
         )
     {
         _createDocumentService = createDocumentService;
@@ -32,6 +38,7 @@ public class Documentcontroller : ControllerBase
         _getDocumentsService = getDocumentsService;
         _deleteDocumentService = deleteDocumentService;
         _updateDocumentService = updateDocumentService;
+        _triageDocumentService = triageDocumentService;
     }
 
     [HttpPost]
@@ -87,13 +94,35 @@ public class Documentcontroller : ControllerBase
     {
         var response = await _updateDocumentService.ExecuteAsync(id, request, cancellationToken);
 
-        if(response is null)
+        if (response is null)
         {
             return NotFound();
         }
 
         return Ok(response);
 
+    }
+
+    [HttpPost("{id:guid}/triage")]
+
+    public async Task<ActionResult> Triage(Guid id,[FromBody] TriageDocumentHttpRequest  request, CancellationToken cancellationToken)
+    {
+        //var result = await _triageDocumentService.ExecuteAsync(request, cancellationToken);
+
+        var result = await _triageDocumentService.ExecuteAsync(
+            new TriageDocumentRequest(
+                id,
+                request.Question
+                ),
+            cancellationToken
+            );
+
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
     }
 
 }

@@ -6,6 +6,6 @@ namespace DocuMind.Infrastructure.AI.Ollama
 {
     public sealed record OllamaChatResponse
     (
-        OllamaMessage message
+        OllamaMessage Message
         );
 }
